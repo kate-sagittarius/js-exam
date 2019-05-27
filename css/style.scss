@@ -1,0 +1,233 @@
+$font-heading: 'Indie Flower', cursive;
+$font-text: 'Work Sans', sans-serif;
+$color-header: #21292D;
+$color-artist: #F6B300;
+$color-contrast: #ED6A5A;
+$black: #000000;
+$white: #F8FBFC;
+$soft-white: #EAEAEA;
+$color-shadow: #544E61;
+
+body {
+  margin: 0;
+  background-color: $soft-white;
+}
+
+h1, h2, h3, h4, p {
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+select, button {
+  font-family: $font-text;
+}
+
+
+.header {
+  box-sizing: border-box;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: $color-header;
+  box-shadow: 0 0 8px $black;
+  font-family: $font-text;
+  margin-bottom: 24px;
+
+  &__headings {
+    &__title {
+      font-family: $font-heading;
+      color: $white;
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+    &__moto {
+      color: $color-contrast;
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+  }
+}
+
+.search-form {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  height: 40px;
+  max-width: 480px;
+  width: 100%;
+  &__select-wrapper {
+    position: relative;
+  }
+  &__select {
+    height: 100%;
+    flex: none;
+    border-radius: 0;
+    border: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    min-width: 72px;
+    padding: 4px 16px 4px 8px;
+    font-size: 14px;
+    &:hover {
+      color: $color-contrast;
+    }
+  }
+  &__select-icon {
+    position: absolute;
+    right: 8px;
+    top: 12px;
+  }
+  &__input {
+    background-color: rgba(248, 251, 252, 0.8);
+    border: 0;
+    flex: auto;
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 18px;
+  }
+  &__button {
+    flex: none;
+    border-radius: 0;
+    border: 0;
+    background-color: $color-contrast;
+    min-width: 102px;
+    color: $white;
+    font-size: 16px;
+    cursor: pointer;
+    &:hover{
+      background-color: $white;
+      color: $color-contrast;
+    }
+  }
+}
+
+.main {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: stretch;
+  margin: 0 20px 24px;
+
+  &__artist {
+    background-color: $color-artist;
+    border-radius: 16px;
+    max-width: 560px;
+    box-sizing: border-box;
+    padding: 20px 20px 20px 28px;
+    box-shadow: 2px 2px 8px $color-shadow;
+    margin-right: 12px;
+    &__image {
+      width: 500px;
+      height: 500px;
+      object-fit: cover;
+      filter: grayscale(50%);
+      margin-bottom: 12px;
+      &--downloaded {
+        border-radius: 50%;
+      }
+    }
+    &__name {
+      font-family: $font-heading;
+      font-size: 40px;
+      color: $color-header;
+      text-align: center;
+    }
+    &__info {
+      padding: 0 18px 0 12px;
+      text-indent: 16px;
+      font-size: 17px;
+      line-height: 1.5;
+      text-align: justify;
+    }
+  }
+
+  &__songs {
+    border-radius: 16px;
+    box-sizing: border-box;
+    padding: 20px;
+    box-shadow: 2px 2px 8px $color-shadow;
+    flex: auto;
+    margin-left: 12px;
+    &__list {
+      font-family: $font-heading;
+      font-size: 24px;
+      &__item {
+        box-sizing: border-box;
+        min-height: 32px;
+        position: relative;
+        margin-bottom: 12px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+        padding: 0 30px 10px 0;
+        cursor: pointer;
+        &__lyrics {
+          font-size: 18px;
+          font-family: $font-text;
+          white-space: pre-line;
+          margin: 0 0 10px 40px;
+        }
+        &__likes {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          .like-image {
+            width: 20px;
+            height: 20px;
+            object-fit: cover;
+            margin-bottom: 4px;
+            vertical-align: middle;
+            &:hover{
+              transform: scale(1.1);
+            }
+          }
+          .likes-number {
+            display: inline-block;
+            font-size: 22px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.footer {
+  background-color: $color-contrast;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: center;
+  padding: 24px;
+  font-family: $font-heading;
+  &__text {
+    margin-bottom: 12px;
+    font-size: 24px;
+    color: $color-header;
+    text-decoration: underline;
+    text-decoration-color: $color-artist;
+  }
+  &__social {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    .social-link {
+      color: $white;
+      font-size: 32px;
+      text-decoration: none;
+      margin-right: 32px;
+      &:last-of-type {
+        margin-right: 0;
+      }
+      &:hover {
+        transform: scale(1.1) rotate(30deg);
+      }
+    }
+  }
+  &__author {
+    text-align: right;
+    font-size: 24px;
+    color: $color-header;
+  }
+}

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="images/favicon.png">
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Work+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <title>Music Lib</title>
+  </head>
+  <body>
+    <header class="header">
+      <section class="header__headings">
+        <h1 class="header__headings__title">Music Lib</h1>
+        <h3 class="header__headings__moto">Start exploring your favorite songs</h3>
+      </section>
+      <form class="search-form" action="index.html" method="post" id="search-form">
+        <div class="search-form__select-wrapper">
+          <select class="search-form__select" name="" id="select">
+            <option value="artist">Artist</option>
+            <option value="song">Song</option>
+          </select>
+          <i class="fas fa-caret-down search-form__select-icon"></i>
+        </div>
+
+        <input type="text" name="" value="" id="query" class="search-form__input">
+        <button type="submit" name="button" class="search-form__button">Search</button>
+      </form>
+    </header>
+    <main id="main" class="main">
+      <section class="main__artist">
+        <img src="images/artist.png" alt="artist" class="main__artist__image">
+        <h2 class="main__artist__name">Metallica</h2>
+        <p class="main__artist__info">Metallica is an American heavy metal band. The band was formed in 1981 in Los Angeles, California by drummer Lars Ulrich and vocalist/guitarist James Hetfield, and has been based in San Francisco, California for most of its career.[1][2] The group's fast tempos, instrumentals and aggressive musicianship made them one of the founding "big four" bands of thrash metal, alongside Megadeth, Anthrax and Slayer. Metallica's current lineup comprises founding members Hetfield and Ulrich, longtime lead guitarist Kirk Hammett and bassist Robert Trujillo. Guitarist Dave Mustaine (who went on to form Megadeth) and bassists Ron McGovney, Cliff Burton and Jason Newsted are former members of the band.</p>
+      </section>
+      <section class="main__songs">
+        <ol class="main__songs__list">
+          <li class="main__songs__list__item">
+            <h4 class="main__songs__list__item__name">Nothing Else Matters (Metallica)</h4>
+            <p class="main__songs__list__item__lyrics">
+              So close, no matter how far
+              Couldn't be much more from the heart
+              Forever trusting who we are
+              And nothing else matters
+              Never opened myself this way
+              Life is ours, we live it our way
+              All these words I don't just say
+              And nothing else matters
+              Trust I seek and I find in you
+              Every day for us something new
+              Open mind for a different view
+              And nothing else matters
+              Never cared for what they do
+              Never cared for what they know
+              But I know
+              So close, no matter how far
+              Couldn't be much more from the heart
+              Forever trusting who we are
+              And nothing else matters
+              Never cared for what they do
+              Never cared for what they know
+              But I know
+              I never opened myself this way
+              Life is ours, we live it our way
+              All these words I don't just say
+              And nothing else matters
+              Trust I seek and I find in you
+              Every day for us, something new
+              Open mind for a different view
+              And nothing else matters
+              Never cared for what they say
+              Never cared for games they play
+              Never cared for what they do
+              Never cared for what they know
+              And I know, yeah!
+              So close, no matter how far
+              Couldn't be much more from the heart
+              Forever trusting who we are
+              No, nothing else matters
+            </p>
+            <div class="main__songs__list__item__likes">
+              <img src="images/like.svg" alt="like" class="like-image">
+              <p class="likes-number">6890</p>
+            </div>
+          </li>
+          <li class="main__songs__list__item">
+            <h4 class="main__songs__list__item__name">Loverman (Garage Inc.)</h4>
+            <div class="main__songs__list__item__likes">
+              <img src="images/like.svg" alt="like" class="like-image">
+              <p class="likes-number">4345</p>
+          </li>
+          <li class="main__songs__list__item">
+            <h4 class="main__songs__list__item__name">Unforgiven (Metallica)</h4>
+            <div class="main__songs__list__item__likes">
+              <img src="images/like.svg" alt="like" class="like-image">
+              <p class="likes-number">5987</p>
+          </li>
+        </ol>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p class="footer__text">Thanks for using Music Lib!</p>
+      <div class="footer__social">
+        <a href="https://github.com/kate-sagittarius" class="social-link"><i class="fab fa-github-square"></i></a>
+        <a href="https://www.linkedin.com/in/kate-zakhovaiko/" class="social-link"><i class="fab fa-linkedin"></i></a>
+        <a href="https://www.facebook.com/profile.php?id=100008213233447" class="social-link"><i class="fab fa-facebook-square"></i></a>
+      </div>
+      <p class="footer__author">by Kate Sagittarius</p>
+    </footer>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
