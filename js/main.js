@@ -1,46 +1,40 @@
 const musixMatchKey = 'dd09d77faf4b4cfe40a00dd542b68f74';
 
-let songsApiUrl = (option, text) => {
-  let tempUrl = '';
-  if (option == 'artist') {
-   tempUrl = `q_artist=${text}`;
-   } else {
-    tempUrl = `q_track=${text}`
-   }
+const corsProxyUrl = 'https://cors-anywhere.herokuapp.com';
 
-   let url = `https://cors-anywhere.herokuapp.com/api.musixmatch.com/ws/1.1/track.search?${tempUrl}&page_size=5&page=1&s_track_rating=desc&apikey=${musixMatchKey}`.replace(/\s/g, '%20');
-   return url;
+const songsApiUrl = (option, text) => {
+  const tempUrl = `q_${option}=${text}`;
+
+  return `${corsProxyUrl}/api.musixmatch.com/ws/1.1/track.search?${tempUrl}&page_size=5&page=1&s_track_rating=desc&apikey=${musixMatchKey}`.replace(/\s/g, '%20');
 }
 
-let getApiSongData = (x) => {
-  let songName = x.track.track_name;
-  let albumName = x.track.album_name;
-  let likesNumber = x.track.num_favourite;
-  let songId = x. track.track_id;
-
-  return {songName, albumName, likesNumber, songId};
+const getApiSongData = (x) => {
+  const {
+    artist_name: artistName,
+    track_name: songName,
+    album_name: albumName,
+    num_favourite: likesNumber,
+    track_id: songId,
+  } = x.track;
+  return { artistName, songName, albumName, likesNumber, songId };
 }
 
-let getSongInfo = (option, text) => {
+const getSongInfo = (option, text) => {
   return axios.get(songsApiUrl(option, text)).then(response => {
-    let artistName = response.data.message.body.track_list[0].track.artist_name;
-    let songsList = response.data.message.body.track_list.map((x) => {
-      return getApiSongData(x);
-    })
-    return {artistName, songsList};
+    return response.data.message.body.track_list.map((x) => getApiSongData(x))
   })
 }
 
 const getWikipediaImageUrl = (filename) => {
-  return axios.get(`https://cors-anywhere.herokuapp.com/en.wikipedia.org/w/api.php?format=json&action=query&titles=Image:${encodeURIComponent(filename)}&prop=imageinfo&iiprop=url`)
+  return axios.get(`${corsProxyUrl}/en.wikipedia.org/w/api.php?format=json&action=query&titles=Image:${encodeURIComponent(filename)}&prop=imageinfo&iiprop=url`)
     .then((response) => {
       const pages = Object.keys(response.data.query.pages)[0];
       return response.data.query.pages[pages].imageinfo[0].url;
     });
 };
 
-let getArtistInfo = (artistName) => {
-  return axios.get(`https://cors-anywhere.herokuapp.com/en.wikipedia.org/w/api.php?format=json&action=query&prop=images|extracts&exintro&explaintext&redirects=1&titles=${artistName}`)
+const getArtistInfo = (artistName) => {
+  return axios.get(`${corsProxyUrl}/en.wikipedia.org/w/api.php?format=json&action=query&prop=images|extracts&exintro&explaintext&redirects=1&titles=${artistName}`)
     .then(response => {
       const wikiPages = Object.keys(response.data.query.pages)[0];
       const page = response.data.query.pages[wikiPages];
@@ -49,31 +43,32 @@ let getArtistInfo = (artistName) => {
       const imageFilename = eligibleImages[Math.floor(Math.random() * eligibleImages.length)].title.slice(5); // drop "File:"
 
       return getWikipediaImageUrl(imageFilename).then((artistPic) => {
-        let artistBio = page.extract.split('\n')[0];
+        const artistBio = page.extract.split('\n')[0];
         return {artistPic, artistBio};
       });
   });
 }
 
-document.getElementById('search-form').onsubmit = () => {
+document.getElementById('search-form').onsubmit = (event) => {
+  event.preventDefault();
+
   const userOption = document.getElementById('select').value;
   const userText = document.getElementById('query').value;
   const songInfo = getSongInfo(userOption, userText);
 
-  songInfo.then((songResult) => {
-    console.log(songResult);
-    getArtistInfo(songResult.artistName).then((artistInfoResult) => {
+  songInfo.then((songsList) => {
+    console.log(songsList);
+    const artistName = songsList[0].artistName;
+    getArtistInfo(artistName).then((artistInfoResult) => {
       console.log(artistInfoResult);
-      createHTMLStructure(songResult.artistName, artistInfoResult.artistPic, artistInfoResult.artistBio, songResult.songsList);
+      createHTMLStructure(artistName, artistInfoResult.artistPic, artistInfoResult.artistBio, songsList);
     })
   })
-
-  return false;
-  }
+}
 
 
-let getSongLyrics = (songId) => {
-  return axios.get(`https://cors-anywhere.herokuapp.com/api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=${songId}&apikey=${musixMatchKey}`)
+const getSongLyrics = (songId) => {
+  return axios.get(`${corsProxyUrl}/api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=${songId}&apikey=${musixMatchKey}`)
     .then(response => {
       return response.data.message.body.lyrics.lyrics_body;
     });
@@ -82,50 +77,64 @@ let getSongLyrics = (songId) => {
 
 const main = document.getElementById('main');
 
-let createElement = (element, classCSS, parent = main) => {
-  let tag = document.createElement(element);
-  tag.setAttribute("class", classCSS);
-  parent.appendChild(tag);
-  return tag;
-}
 
-let createHTMLStructure = (artistName, artistPic, artistBio, songList) => {
+const createHTMLStructure = (artistName, artistPic, artistBio, songList) => {
   main.innerHTML = '';
-  let sectionAuthor = createElement('section', "main__artist");
-  let imgAuthor = createElement('img', "main__artist__image main__artist__image--downloaded", sectionAuthor);
+
+  createArtistHTMLStructure(artistName, artistPic, artistBio);
+  createSongListHTMLStructure(songList);
+};
+
+const createArtistHTMLStructure = (artistName, artistPic, artistBio) => {
+  const sectionAuthor = createElement('section', "main__artist");
+  const imgAuthor = createElement('img', "main__artist__image main__artist__image--downloaded", sectionAuthor);
   imgAuthor.setAttribute("alt", artistName);
   imgAuthor.setAttribute("src", artistPic);
-  let hArtistName = createElement('h2', "main__artist__name", sectionAuthor);
+  const hArtistName = createElement('h2', "main__artist__name", sectionAuthor);
   hArtistName.innerHTML = artistName;
-  let pArtistBio = createElement('p', "main__artist__info", sectionAuthor);
+  const pArtistBio = createElement('p', "main__artist__info", sectionAuthor);
   pArtistBio.innerHTML = artistBio;
+};
 
-  let sectionSongs = createElement('section', "main__songs");
-  let olSongs = createElement('ol', "main__songs__list", sectionSongs);
+const createSongListHTMLStructure = (songList) => {
+  const sectionSongs = createElement('section', "main__songs");
+  const olSongs = createElement('ol', "main__songs__list", sectionSongs);
   songList.forEach(x => {
-    let liSong = createElement('li', "main__songs__list__item", olSongs);
+    const liSong = createElement('li', "main__songs__list__item", olSongs);
     liSong.onclick = () => {
       showSongLyrics(liSong, x.songId);
     }
-    let hSong = createElement('h4', "main__songs__list__item__name", liSong);
+    const hSong = createElement('h4', "main__songs__list__item__name", liSong);
     hSong.innerHTML = `${x.songName} (${x.albumName})`;
-    let divSongLikes = createElement('div', "main__songs__list__item__likes", liSong);
-    let imgLike = createElement('img', "like-image", divSongLikes);
+    const divSongLikes = createElement('div', "main__songs__list__item__likes", liSong);
+    const imgLike = createElement('img', "like-image", divSongLikes);
     imgLike.setAttribute("alt", "like");
     imgLike.setAttribute("src", "images/like.svg");
-    let pLikesNumber = createElement('p', "likes-number", divSongLikes);
+    const pLikesNumber = createElement('p', "likes-number", divSongLikes);
     pLikesNumber.innerHTML = x.likesNumber;
-  })
-}
+  });
+};
 
-let showSongLyrics = (liSong, songId) => {
-  let lyrics = [...document.getElementsByClassName("main__songs__list__item__lyrics")];
+const createElement = (element, classCSS, parent = main) => {
+  const tag = document.createElement(element);
+  tag.setAttribute("class", classCSS);
+  parent.appendChild(tag);
+  return tag;
+};
+
+const showSongLyrics = (liSong, songId) => {
+  const lyrics = [...document.getElementsByClassName("main__songs__list__item__lyrics")];
   lyrics.forEach(x => x.remove());
-  // let parent = [...document.getElementsByClassName("main__songs__list__item")];
-  // parent.forEach( x => x.removeChild(lyrics));
 
-  let pSong = createElement('p', "main__songs__list__item__lyrics", liSong);
+  const pSong = createElement('p', "main__songs__list__item__lyrics", liSong);
   getSongLyrics(songId).then((lyrics) => {
     pSong.innerHTML = lyrics;
   });
-}
+};
+
+// const updateArtist = (artistName) => {
+//   // get artist info
+//   getArtistInfo(artistName).then((info) => {
+//     // display artist info
+//   });
+// };
