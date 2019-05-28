@@ -98,12 +98,10 @@ document.getElementById('search-form').onsubmit = (event) => {
   const trackInfo = getTrackInfo(userOption, userText);
 
   trackInfo.then((tracksList) => {
-    console.log(tracksList);
+    createHTMLStructure(tracksList);
+
     const artistName = tracksList[0].artistName;
-    getArtistInfo(artistName).then((artistInfoResult) => {
-      console.log(artistInfoResult);
-      createHTMLStructure(artistName, artistInfoResult.artistPic, artistInfoResult.artistBio, tracksList);
-    });
+    updateArtist(artistName);
   });
 };
 
@@ -116,20 +114,19 @@ const getTrackLyrics = (trackId) => {
 
 const main = document.getElementById('main');
 
-const createHTMLStructure = (artistName, artistPic, artistBio, trackList) => {
+const createHTMLStructure = (trackList) => {
   main.innerHTML = '';
   const sectionAuthor = createElement('section', "main__artist", main);
   sectionAuthor.setAttribute('id', 'section-author');
 
-  createArtistHTMLStructure(artistName, artistPic, artistBio);
   createTrackListHTMLStructure(trackList);
 };
 
-const createArtistHTMLStructure = (artistName, artistPic, artistBio) => {
+const createArtistHTMLStructure = (artistName, artistPic="images/artist.png", artistBio="") => {
   const sectionAuthor = document.getElementById('section-author');
   sectionAuthor.innerHTML = '';
 
-  const imgAuthor = createElement('img', "main__artist__image main__artist__image--downloaded", sectionAuthor);
+  const imgAuthor = createElement('img', `main__artist__image ${artistPic === 'images/artist.png' ? '' : 'main__artist__image--downloaded'}`, sectionAuthor);
   imgAuthor.setAttribute("alt", artistName);
   imgAuthor.setAttribute("src", artistPic);
   const hArtistName = createElement('h2', "main__artist__name", sectionAuthor);
@@ -148,7 +145,7 @@ const createTrackListHTMLStructure = (trackList) => {
       updateArtist(x.artistName);
     }
     const hTrack = createElement('h4', "main__tracks__list__item__name", liTrack);
-    hTrack.innerHTML = `${x.trackName} (${x.albumName})`;
+    hTrack.innerHTML = `${x.trackName} (${x.albumName}) — ${x.artistName}`;
     const divTrackLikes = createElement('div', "main__tracks__list__item__likes", liTrack);
     const imgLike = createElement('img', "like-image", divTrackLikes);
     imgLike.setAttribute("alt", "like");
@@ -176,7 +173,8 @@ const showTrackLyrics = (liTrack, trackId) => {
 };
 
 const updateArtist = (artistName) => {
-  getArtistInfo(artistName).then((info) => {
+  createArtistHTMLStructure(artistName);
+  return getArtistInfo(artistName).then((info) => {
     createArtistHTMLStructure(artistName, info.artistPic, info.artistBio);
   });
 };
