@@ -31,14 +31,27 @@ let getSongInfo = (option, text) => {
   })
 }
 
+const getWikipediaImageUrl = (filename) => {
+  return axios.get(`https://cors-anywhere.herokuapp.com/en.wikipedia.org/w/api.php?format=json&action=query&titles=Image:${encodeURIComponent(filename)}&prop=imageinfo&iiprop=url`)
+    .then((response) => {
+      const pages = Object.keys(response.data.query.pages)[0];
+      return response.data.query.pages[pages].imageinfo[0].url;
+    });
+};
+
 let getArtistInfo = (artistName) => {
   return axios.get(`https://cors-anywhere.herokuapp.com/en.wikipedia.org/w/api.php?format=json&action=query&prop=images|extracts&exintro&explaintext&redirects=1&titles=${artistName}`)
     .then(response => {
-      let continueUrl = response.data.continue.imcontinue;
-      let artistPic = `https://upload.wikimedia.org/wikipedia/commons/2/2f/${continueUrl.split('|')[1]}`;
-      let wikiPages = Object.keys(response.data.query.pages)[0];
-      let artistBio = response.data.query.pages[wikiPages].extract.split('\n')[0];
-      return {artistPic, artistBio};
+      const wikiPages = Object.keys(response.data.query.pages)[0];
+      const page = response.data.query.pages[wikiPages];
+
+      const eligibleImages = page.images.filter((x) => !x.title.includes('.svg') && !x.title.includes('.ogg'));
+      const imageFilename = eligibleImages[Math.floor(Math.random() * eligibleImages.length)].title.slice(5); // drop "File:"
+
+      return getWikipediaImageUrl(imageFilename).then((artistPic) => {
+        let artistBio = page.extract.split('\n')[0];
+        return {artistPic, artistBio};
+      });
   });
 }
 
@@ -60,11 +73,10 @@ document.getElementById('search-form').onsubmit = () => {
 
 
 let getSongLyrics = (songId) => {
-  axios.get(`https://cors-anywhere.herokuapp.com/api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=${songId}&apikey=${musixMatchKey}`)
+  return axios.get(`https://cors-anywhere.herokuapp.com/api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=${songId}&apikey=${musixMatchKey}`)
     .then(response => {
-      return response.body.lyrics.lyrics_body;
-    })
-
+      return response.data.message.body.lyrics.lyrics_body;
+    });
 }
 
 
@@ -78,11 +90,13 @@ let createElement = (element, classCSS, parent = main) => {
 }
 
 let createHTMLStructure = (artistName, artistPic, artistBio, songList) => {
+  main.innerHTML = '';
   let sectionAuthor = createElement('section', "main__artist");
   let imgAuthor = createElement('img', "main__artist__image main__artist__image--downloaded", sectionAuthor);
   imgAuthor.setAttribute("alt", artistName);
   imgAuthor.setAttribute("src", artistPic);
   let hArtistName = createElement('h2', "main__artist__name", sectionAuthor);
+  hArtistName.innerHTML = artistName;
   let pArtistBio = createElement('p', "main__artist__info", sectionAuthor);
   pArtistBio.innerHTML = artistBio;
 
@@ -90,6 +104,9 @@ let createHTMLStructure = (artistName, artistPic, artistBio, songList) => {
   let olSongs = createElement('ol', "main__songs__list", sectionSongs);
   songList.forEach(x => {
     let liSong = createElement('li', "main__songs__list__item", olSongs);
+    liSong.onclick = () => {
+      showSongLyrics(liSong, x.songId);
+    }
     let hSong = createElement('h4', "main__songs__list__item__name", liSong);
     hSong.innerHTML = `${x.songName} (${x.albumName})`;
     let divSongLikes = createElement('div', "main__songs__list__item__likes", liSong);
@@ -101,12 +118,14 @@ let createHTMLStructure = (artistName, artistPic, artistBio, songList) => {
   })
 }
 
+let showSongLyrics = (liSong, songId) => {
+  let lyrics = [...document.getElementsByClassName("main__songs__list__item__lyrics")];
+  lyrics.forEach(x => x.remove());
+  // let parent = [...document.getElementsByClassName("main__songs__list__item")];
+  // parent.forEach( x => x.removeChild(lyrics));
 
-let songClick = (parent, x) => {
-  let lyrics = document.getElementsByClassName("main__songs__list__item__lyrics");
-  parent.removeChild(lyrics);
-
-  let songId = x.songId;
   let pSong = createElement('p', "main__songs__list__item__lyrics", liSong);
-  pSong.innerHTML = getSongLyrics(songId);
+  getSongLyrics(songId).then((lyrics) => {
+    pSong.innerHTML = lyrics;
+  });
 }
