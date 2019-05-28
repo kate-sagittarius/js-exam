@@ -115,6 +115,16 @@ const getTrackLyrics = (trackId) => {
 const main = document.getElementById('main');
 
 const createHTMLStructure = (trackList) => {
+  const header = document.getElementById('header');
+  header.className = "header";
+
+  const title = document.getElementById('title');
+  title.className = "header__headings__title header__headings__title--loaded-content";
+
+  const moto = [...document.getElementsByClassName('header__headings__moto')];
+  moto.forEach(x => x.remove());
+
+
   main.innerHTML = '';
   const sectionAuthor = createElement('section', "main__artist", main);
   sectionAuthor.setAttribute('id', 'section-author');
@@ -152,6 +162,11 @@ const createTrackListHTMLStructure = (trackList) => {
     imgLike.setAttribute("src", "images/like.svg");
     const pLikesNumber = createElement('p', "likes-number", divTrackLikes);
     pLikesNumber.innerHTML = x.likesNumber;
+
+    divTrackLikes.onclick = (event) => event.stopPropagation();
+    imgLike.onclick = (event) => {
+      pLikesNumber.innerHTML = parseInt(pLikesNumber.innerHTML, 10) + 1;
+    };
   });
 };
 

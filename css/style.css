@@ -16,20 +16,32 @@ select, button {
   box-sizing: border-box;
   padding: 25px;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
   background-color: #21292D;
   box-shadow: 0 0 8px #000000;
   font-family: "Work Sans", sans-serif;
-  margin-bottom: 24px;
+  position: relative;
+}
+.header--initial {
+  min-height: calc(100vh - 189px);
+  flex-direction: column;
 }
 .header__headings__title {
   font-family: "Indie Flower", cursive;
-  color: #F8FBFC;
   font-size: 32px;
   margin-bottom: 16px;
+}
+.header__headings__title--loaded-content {
+  position: absolute;
+  left: 25px;
+  bottom: 25px;
+  top: 25px;
+}
+.header__headings__title__link {
+  text-decoration: none;
+  color: #F8FBFC;
 }
 .header__headings__moto {
   color: #ED6A5A;
@@ -94,7 +106,7 @@ select, button {
   display: flex;
   flex-flow: row;
   align-items: stretch;
-  margin: 0 20px 24px;
+  margin: 0 20px;
 }
 .main__artist {
   background-color: #F6B300;
@@ -104,7 +116,7 @@ select, button {
   box-sizing: border-box;
   padding: 20px 20px 20px 28px;
   box-shadow: 2px 2px 8px #544E61;
-  margin-right: 12px;
+  margin: 24px 12px 24px 0;
 }
 .main__artist__image {
   width: 500px;
@@ -135,7 +147,7 @@ select, button {
   padding: 20px;
   box-shadow: 2px 2px 8px #544E61;
   flex: auto;
-  margin-left: 12px;
+  margin: 24px 0 24px 12px;
 }
 .main__tracks__list {
   font-family: "Indie Flower", cursive;

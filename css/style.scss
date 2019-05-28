@@ -27,21 +27,33 @@ select, button {
   box-sizing: border-box;
   padding: 25px;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
   background-color: $color-header;
   box-shadow: 0 0 8px $black;
   font-family: $font-text;
-  margin-bottom: 24px;
+  position: relative;
+  &--initial {
+    min-height: calc(100vh - 189px);
+    flex-direction: column;
+  }
 
   &__headings {
     &__title {
       font-family: $font-heading;
-      color: $white;
       font-size: 32px;
       margin-bottom: 16px;
+      &--loaded-content {
+        position: absolute;
+        left: 25px;
+        bottom: 25px;
+        top: 25px;
+      }
+      &__link {
+        text-decoration: none;
+        color: $white;
+      }
     }
     &__moto {
       color: $color-contrast;
@@ -108,7 +120,7 @@ select, button {
   display: flex;
   flex-flow: row;
   align-items: stretch;
-  margin: 0 20px 24px;
+  margin: 0 20px;
 
   &__artist {
     background-color: $color-artist;
@@ -118,7 +130,7 @@ select, button {
     box-sizing: border-box;
     padding: 20px 20px 20px 28px;
     box-shadow: 2px 2px 8px $color-shadow;
-    margin-right: 12px;
+    margin: 24px 12px 24px 0;
     &__image {
       width: 500px;
       height: 500px;
@@ -150,7 +162,7 @@ select, button {
     padding: 20px;
     box-shadow: 2px 2px 8px $color-shadow;
     flex: auto;
-    margin-left: 12px;
+    margin: 24px 0 24px 12px;
     &__list {
       font-family: $font-heading;
       font-size: 24px;
