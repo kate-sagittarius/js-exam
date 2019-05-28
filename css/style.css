@@ -92,7 +92,7 @@ select, button {
 
 .main {
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row;
   align-items: stretch;
   margin: 0 20px 24px;
 }
@@ -128,7 +128,7 @@ select, button {
   line-height: 1.5;
   text-align: justify;
 }
-.main__songs {
+.main__tracks {
   border-radius: 16px;
   box-sizing: border-box;
   padding: 20px;
@@ -136,11 +136,11 @@ select, button {
   flex: auto;
   margin-left: 12px;
 }
-.main__songs__list {
+.main__tracks__list {
   font-family: "Indie Flower", cursive;
   font-size: 24px;
 }
-.main__songs__list__item {
+.main__tracks__list__item {
   box-sizing: border-box;
   min-height: 32px;
   position: relative;
@@ -149,28 +149,29 @@ select, button {
   padding: 0 30px 10px 0;
   cursor: pointer;
 }
-.main__songs__list__item__lyrics {
+.main__tracks__list__item__lyrics {
   font-size: 18px;
   font-family: "Work Sans", sans-serif;
   white-space: pre-line;
   margin: 0 0 10px 40px;
 }
-.main__songs__list__item__likes {
+.main__tracks__list__item__likes {
   position: absolute;
   bottom: 0;
   right: 0;
 }
-.main__songs__list__item__likes .like-image {
+.main__tracks__list__item__likes .like-image {
   width: 20px;
   height: 20px;
   object-fit: cover;
   margin-bottom: 4px;
+  margin-right: 8px;
   vertical-align: middle;
 }
-.main__songs__list__item__likes .like-image:hover {
+.main__tracks__list__item__likes .like-image:hover {
   transform: scale(1.1);
 }
-.main__songs__list__item__likes .likes-number {
+.main__tracks__list__item__likes .likes-number {
   display: inline-block;
   font-size: 22px;
 }
