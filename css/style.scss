@@ -38,6 +38,9 @@ select, button {
     min-height: calc(100vh - 189px);
     flex-direction: column;
   }
+  &--no-results {
+    flex-direction: column;
+  }
 
   &__headings {
     &__title {
@@ -172,7 +175,7 @@ select, button {
         position: relative;
         margin-bottom: 12px;
         border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-        padding: 0 30px 10px 0;
+        padding: 0 80px 10px 0;
         cursor: pointer;
         &__lyrics {
           font-size: 18px;
@@ -200,6 +203,40 @@ select, button {
             font-size: 22px;
           }
         }
+      }
+    }
+  }
+  &__no-results {
+    box-sizing: border-box;
+    margin: 24px;
+    border-radius: 16px;
+    background: linear-gradient(45deg, rgb(234, 234, 234) 50%, rgb(246, 179, 0) 50%);
+    box-shadow: 2px 2px 8px $color-shadow;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 100%;
+    display: flex;
+    align-items: stretch;
+    min-height: 516px;
+    &__wrapper {
+      border-radius: 16px;
+      background: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url("../images/music-tape.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      .main__no-result__message {
+        background: linear-gradient(45deg, rgba(255,255,255,0.5), rgba(234,234,234,0.5));
+        padding: 5px 10px;
+        font-family: $font-heading;
+        color: $color-header;
+        font-size: 56px;
       }
     }
   }
@@ -243,5 +280,26 @@ select, button {
     text-align: right;
     font-size: 24px;
     color: $color-header;
+  }
+}
+
+@media (max-width: 470px) {
+  .search-form {
+    flex-wrap: wrap;
+    height: 108px;
+    &__select {
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+    }
+    &__input {
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
+    &__button {
+      margin-top: 8px;
+      flex-grow: 1;
+      height: 40px;
+      border-radius: 4px;
+    }
   }
 }

@@ -28,6 +28,9 @@ select, button {
   min-height: calc(100vh - 189px);
   flex-direction: column;
 }
+.header--no-results {
+  flex-direction: column;
+}
 .header__headings__title {
   font-family: "Indie Flower", cursive;
   font-size: 32px;
@@ -159,7 +162,7 @@ select, button {
   position: relative;
   margin-bottom: 12px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  padding: 0 30px 10px 0;
+  padding: 0 80px 10px 0;
   cursor: pointer;
 }
 .main__tracks__list__item__lyrics {
@@ -187,6 +190,40 @@ select, button {
 .main__tracks__list__item__likes .likes-number {
   display: inline-block;
   font-size: 22px;
+}
+.main__no-results {
+  box-sizing: border-box;
+  margin: 24px;
+  border-radius: 16px;
+  background: linear-gradient(45deg, #eaeaea 50%, #f6b300 50%);
+  box-shadow: 2px 2px 8px #544E61;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  min-height: 516px;
+}
+.main__no-results__wrapper {
+  border-radius: 16px;
+  background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url("../images/music-tape.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.main__no-results__wrapper .main__no-result__message {
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.5), rgba(234, 234, 234, 0.5));
+  padding: 5px 10px;
+  font-family: "Indie Flower", cursive;
+  color: #21292D;
+  font-size: 56px;
 }
 
 .footer {
@@ -228,6 +265,27 @@ select, button {
   text-align: right;
   font-size: 24px;
   color: #21292D;
+}
+
+@media (max-width: 470px) {
+  .search-form {
+    flex-wrap: wrap;
+    height: 108px;
+  }
+  .search-form__select {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+  }
+  .search-form__input {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+  .search-form__button {
+    margin-top: 8px;
+    flex-grow: 1;
+    height: 40px;
+    border-radius: 4px;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */

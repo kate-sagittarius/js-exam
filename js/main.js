@@ -98,24 +98,36 @@ document.getElementById('search-form').onsubmit = (event) => {
   const trackInfo = getTrackInfo(userOption, userText);
 
   trackInfo.then((tracksList) => {
-    createHTMLStructure(tracksList);
+    if (tracksList.length === 0) {
+      createNoResultsHTMLStructure();
+    } else {
+      createHTMLStructure(tracksList);
 
-    const artistName = tracksList[0].artistName;
-    updateArtist(artistName);
+      const artistName = tracksList[0].artistName;
+      updateArtist(artistName);
+    }
   });
 };
 
 const getTrackLyrics = (trackId) => {
   return axios.get(trackLyricsUrl(trackId))
     .then(response => {
-      return response.data.message.body.lyrics.lyrics_body;
+      let trackLyrics = '';
+
+      if (response.data.message.header.status_code !== 200) {
+        trackLyrics = 'Unfortunately, we have found no lyrics for this song :( \n But we permanently work on improvments and surely will add the lyrics soon!';
+      } else {
+        trackLyrics = response.data.message.body.lyrics.lyrics_body;
+      }
+
+      return trackLyrics;
     });
 };
 
 const main = document.getElementById('main');
+const header = document.getElementById('header');
 
 const createHTMLStructure = (trackList) => {
-  const header = document.getElementById('header');
   header.className = "header";
 
   const title = document.getElementById('title');
@@ -130,6 +142,17 @@ const createHTMLStructure = (trackList) => {
   sectionAuthor.setAttribute('id', 'section-author');
 
   createTrackListHTMLStructure(trackList);
+};
+
+const createNoResultsHTMLStructure = () => {
+  main.innerHTML = '';
+
+  header.className = "header header--no-results";
+
+  const sectionNoResults = createElement('section', "main__no-results", main);
+  const divNoResults = createElement('div', "main__no-results__wrapper", sectionNoResults);
+  const pNoResultsMessage = createElement('p', "main__no-result__message", divNoResults);
+  pNoResultsMessage.innerHTML = 'We have found nothing :(';
 };
 
 const createArtistHTMLStructure = (artistName, artistPic="images/artist.png", artistBio="") => {
