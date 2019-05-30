@@ -159,7 +159,8 @@ const createArtistHTMLStructure = (artistName, artistPic="images/artist.png", ar
   const sectionAuthor = document.getElementById('section-author');
   sectionAuthor.innerHTML = '';
 
-  const imgAuthor = createElement('img', `main__artist__image ${artistPic === 'images/artist.png' ? '' : 'main__artist__image--downloaded'}`, sectionAuthor);
+  const divImgWrapper = createElement('div', "main__artist__image-wrapper", sectionAuthor);
+  const imgAuthor = createElement('img', `main__artist__image ${artistPic === 'images/artist.png' ? '' : 'main__artist__image--downloaded'}`, divImgWrapper);
   imgAuthor.setAttribute("alt", artistName);
   imgAuthor.setAttribute("src", artistPic);
   const hArtistName = createElement('h2', "main__artist__name", sectionAuthor);

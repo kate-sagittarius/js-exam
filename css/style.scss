@@ -83,7 +83,7 @@ select, button {
     border: 0;
     -webkit-appearance: none;
     -moz-appearance: none;
-    min-width: 72px;
+    min-width: 80px;
     padding: 4px 16px 4px 8px;
     font-size: 14px;
     &:hover {
@@ -102,13 +102,14 @@ select, button {
     box-sizing: border-box;
     text-align: center;
     font-size: 18px;
+    min-width: 236px;
   }
   &__button {
     flex: none;
     border-radius: 0;
     border: 0;
     background-color: $color-contrast;
-    min-width: 102px;
+    min-width: 108px;
     color: $white;
     font-size: 16px;
     cursor: pointer;
@@ -121,25 +122,38 @@ select, button {
 
 .main {
   display: flex;
-  flex-flow: row;
+  flex-flow: row wrap-reverse;
   align-items: stretch;
-  margin: 0 20px;
+  margin: 0 8px;
 
   &__artist {
     background-color: $color-artist;
     border-radius: 16px;
-    max-width: 560px;
-    width: 100%;
+    min-width: 280px;
     box-sizing: border-box;
     padding: 20px 20px 20px 28px;
     box-shadow: 2px 2px 8px $color-shadow;
-    margin: 24px 12px 24px 0;
+    margin: 24px 8px 24px 8px;
+    flex-grow: 2;
+    flex-basis: 460px;
+    &__image-wrapper {
+      width: 100%;
+      max-width: 420px;
+      position: relative;
+      margin: 0 auto;
+      margin-bottom: 24px;
+      &::after {
+        content: "";
+        display: block;
+        padding-bottom: 100%;
+      }
+    }
     &__image {
-      width: 500px;
-      height: 500px;
+      position: absolute;
       object-fit: cover;
+      width: 100%;
+      height: 100%;
       filter: grayscale(50%);
-      margin-bottom: 12px;
       &--downloaded {
         border-radius: 50%;
       }
@@ -165,7 +179,9 @@ select, button {
     padding: 20px;
     box-shadow: 2px 2px 8px $color-shadow;
     flex: auto;
-    margin: 24px 0 24px 12px;
+    margin: 24px 8px 24px 8px;
+    flex-grow: 3;
+    flex-basis: 500px;
     &__list {
       font-family: $font-heading;
       font-size: 24px;
@@ -177,6 +193,7 @@ select, button {
         border-bottom: 1px solid rgba(0, 0, 0, 0.2);
         padding: 0 80px 10px 0;
         cursor: pointer;
+        text-align: justify;
         &__lyrics {
           font-size: 18px;
           font-family: $font-text;
@@ -283,7 +300,33 @@ select, button {
   }
 }
 
-@media (max-width: 470px) {
+
+@media (max-width: 820px) {
+  .header {
+    flex-direction: column;
+    &__headings {
+      &__title {
+        &--loaded-content {
+          position: static;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 670px) {
+  .main {
+    &__no-results {
+      margin: 12px;
+      .main__no-result__message {
+        font-size: 38px;
+        padding: 5px;
+      }
+    }
+  }
+}
+
+@media (max-width: 475px) {
   .search-form {
     flex-wrap: wrap;
     height: 108px;
@@ -294,12 +337,26 @@ select, button {
     &__input {
       border-top-right-radius: 4px;
       border-bottom-right-radius: 4px;
+      min-width: 190px;
     }
     &__button {
       margin-top: 8px;
       flex-grow: 1;
       height: 40px;
       border-radius: 4px;
+    }
+  }
+  .main {
+    margin: 4px;
+    &__no-results {
+      margin: 10px 8px;
+      min-height: 320px;
+      &__wrapper {
+        .main__no-result__message {
+          font-size: 28px;
+          padding: 2px;
+        }
+      }
     }
   }
 }
